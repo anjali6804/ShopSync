@@ -35,3 +35,7 @@ void Product::productDetails() const
     std::cout << "Stock      : " << stock << '\n';
     std::cout << "Category   : " << category << '\n';
 }
+int Product::getId() const
+{
+    return id;
+}

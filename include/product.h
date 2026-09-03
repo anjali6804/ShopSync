@@ -12,12 +12,8 @@ private:
     string category;
 
 public:
-    Product(int id,
-            const string& name,
-            double price,
-            int stock,
-            const string& category);
-
+    Product(int id, const string& name, double price,int stock, const string& category);
+    int getId() const;
     void addStock(int quantity);
     bool subtractStock(int quantity);
 
