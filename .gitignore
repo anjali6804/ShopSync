@@ -1,4 +1,5 @@
+shopsync
 build/
 *.o
 *.out
-.vscode/
+tests/test_stack

@@ -1,0 +1,5 @@
+104|Headphones|2000|5|Audio
+101|Laptop|55000|10|Electronics
+102|Mouse|800|20|Accessories
+103|Keyboard|1500|15|Accessories
+105|PC|80000|32|Electronics

@@ -13,13 +13,19 @@ private:
 
 public:
     Product(int id, const string& name, double price,int stock, const string& category);
-    int getId() const;
+    
     void addStock(int quantity);
     bool subtractStock(int quantity);
-
     double discountPrice(double percentage) const;
-
     void productDetails() const;
-};
 
-#endif
+    int getId() const;
+
+    void updatePrice(double newPrice);
+    void updateStock(int newStock);
+    double getPrice() const;
+    int getStock() const;
+    std::string getName() const;
+    std::string getCategory() const;
+};
+#endif 

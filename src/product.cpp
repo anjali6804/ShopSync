@@ -39,3 +39,36 @@ int Product::getId() const
 {
     return id;
 }
+void Product::updatePrice(double newPrice)
+{
+    if (newPrice >= 0)
+    {
+        price = newPrice;
+    }
+}
+
+void Product::updateStock(int newStock)
+{
+    if (newStock >= 0)
+    {
+        stock = newStock;
+    }
+}
+
+double Product::getPrice() const
+{
+    return price;
+}
+int Product::getStock() const
+{
+    return stock;
+}
+std::string Product::getName() const
+{
+    return name;
+}
+
+std::string Product::getCategory() const
+{
+    return category;
+}
