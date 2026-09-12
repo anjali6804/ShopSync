@@ -74,12 +74,17 @@ void Server::broadcastMessage(const char* message, int senderSocket)
     {
         if (clientSocket != senderSocket)
         {
-            send(
-                clientSocket,
-                message,
-                strlen(message),
-                0
-            );
+            int bytesSent = send(
+    clientSocket,
+    message,
+    strlen(message),
+    0
+);
+
+if (bytesSent == -1)
+{
+    std::cerr << "Failed to send message to client.\n";
+}
         }
     }
 }
