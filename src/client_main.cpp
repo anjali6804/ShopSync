@@ -1,5 +1,9 @@
 #include "../include/client.h"
 
+#include <iostream>
+#include <string>
+#include <thread>
+
 int main()
 {
     Client client;
@@ -9,9 +13,28 @@ int main()
         return 1;
     }
 
-    client.sendMessage("Hello Server!");
+    std::thread receiver([&client]()
+    {
+        client.receiveMessage();
+    });
 
-    client.receiveMessage();
+    std::string message;
+
+    while (true)
+    {
+        std::cout << "Enter message (type exit to quit): ";
+        std::getline(std::cin, message);
+
+        if (message == "exit")
+        {
+            client.disconnect();
+            break;
+        }
+
+        client.sendMessage(message.c_str());
+    }
+
+    receiver.join();
 
     return 0;
 }

@@ -80,3 +80,11 @@ void Client::receiveMessage()
         std::cout << "Server: " << buffer << '\n';
     }
 }
+void Client::disconnect()
+{
+    if (clientSocket != -1)
+    {
+        close(clientSocket);
+        clientSocket = -1;
+    }
+}

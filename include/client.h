@@ -13,6 +13,7 @@ public:
     bool connectToServer(const char* ip, int port);
     void sendMessage(const char* message);
     void receiveMessage();
+    void disconnect();
 };
 
 #endif

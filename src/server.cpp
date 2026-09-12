@@ -4,6 +4,9 @@
 #include <cstring>
 #include <thread>
 
+#include <vector>
+#include <mutex>
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
@@ -63,34 +66,52 @@ bool Server::start(int port)
 
     return true;
 }
-void Server::handleClient(int clientSocket)
-{   std::cout << "Handling client in separate thread...\n";
-    char buffer[1024] = {0};
-    int bytesReceived = recv(
-        clientSocket,
-        buffer,
-        sizeof(buffer) - 1,
-        0
-    );
-   
-    std::cout << "recv() returned: "
-              << bytesReceived << '\n';
+void Server::broadcastMessage(const char* message, int senderSocket)
+{
+    std::lock_guard<std::mutex> lock(clientsMutex);
 
-    if (bytesReceived > 0)
+    for (int clientSocket : clients)
     {
+        if (clientSocket != senderSocket)
+        {
+            send(
+                clientSocket,
+                message,
+                strlen(message),
+                0
+            );
+        }
+    }
+}
+void Server::handleClient(int clientSocket)
+{
+    std::cout << "Handling client in separate thread...\n";
+
+    char buffer[1024] = {0};
+
+    while (true)
+    {
+        int bytesReceived = recv(
+            clientSocket,
+            buffer,
+            sizeof(buffer) - 1,
+            0
+        );
+
+        std::cout << "recv() returned: "
+                  << bytesReceived << '\n';
+
+        if (bytesReceived <= 0)
+        {
+            break;
+        }
+
         buffer[bytesReceived] = '\0';
 
         std::cout << "Client: "
                   << buffer << '\n';
 
-        const char* response = "Hello Client!";
-
-        send(
-            clientSocket,
-            response,
-            strlen(response),
-            0
-        );
+        broadcastMessage(buffer, clientSocket);
     }
 
     close(clientSocket);
@@ -120,7 +141,10 @@ void Server::run()
         }
 
         std::cout << "Client connected successfully!\n";
-
+        {
+    std::lock_guard<std::mutex> lock(clientsMutex);
+    clients.push_back(clientSocket);
+        }
         std::thread clientThread(
             &Server::handleClient,
             this,
