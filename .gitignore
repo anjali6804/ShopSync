@@ -4,3 +4,4 @@ build/
 *.out
 tests/test_stack
 client
+shopsync_server

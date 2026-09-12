@@ -67,49 +67,56 @@ void Server::run()
 {
     std::cout << "Server is waiting for clients...\n";
 
-    sockaddr_in clientAddress{};
-    socklen_t clientLength = sizeof(clientAddress);
-
-    int clientSocket = accept(
-        serverSocket,
-        (struct sockaddr*)&clientAddress,
-        &clientLength
-    );
-
-    if (clientSocket == -1)
+    while (true)
     {
-        std::cerr << "Failed to accept client.\n";
-        return;
-    }
+        sockaddr_in clientAddress{};
+        socklen_t clientLength = sizeof(clientAddress);
 
-    std::cout << "Client connected successfully!\n";
+        int clientSocket = accept(
+            serverSocket,
+            (struct sockaddr*)&clientAddress,
+            &clientLength
+        );
 
-    char buffer[1024] = {0};
+        if (clientSocket == -1)
+        {
+            std::cerr << "Failed to accept client.\n";
+            continue;
+        }
 
-    int bytesReceived = recv(
-        clientSocket,
-        buffer,
-        sizeof(buffer) - 1,
-        0
-    );
-    std::cout << "recv() returned: " << bytesReceived << '\n';
+        std::cout << "Client connected successfully!\n";
 
-    if (bytesReceived > 0)
-    {
-        buffer[bytesReceived] = '\0';
+        char buffer[1024] = {0};
 
-        std::cout << "Client: "
-                  << buffer << '\n';
-
-        const char* response = "Hello Client!";
-
-        send(
+        int bytesReceived = recv(
             clientSocket,
-            response,
-            strlen(response),
+            buffer,
+            sizeof(buffer) - 1,
             0
         );
-    }
 
-    close(clientSocket);
+        std::cout << "recv() returned: "
+                  << bytesReceived << '\n';
+
+        if (bytesReceived > 0)
+        {
+            buffer[bytesReceived] = '\0';
+
+            std::cout << "Client: "
+                      << buffer << '\n';
+
+            const char* response = "Hello Client!";
+
+            send(
+                clientSocket,
+                response,
+                strlen(response),
+                0
+            );
+        }
+
+        close(clientSocket);
+
+        std::cout << "Client disconnected.\n";
+    }
 }
