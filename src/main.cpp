@@ -9,7 +9,7 @@ int main()
     ProductManager manager;
     manager.loadFromFile("data/products.txt");
     Cart cart;
-    Order order(1001);
+    int nextOrderId = 1001;
  
 int choice;
 
@@ -258,7 +258,7 @@ if (choice == 14)
 
         // Step 2: Only continue if ALL products are available
         if (stockAvailable)
-        {
+        {  Order order(nextOrderId);
             for (const CartItem& item : cartItems)
             {
                 Product* product =
@@ -278,12 +278,14 @@ if (choice == 14)
             cout << "Order created successfully!\n";
 
             order.displayOrder();
+            nextOrderId++;
 
             // Step 5: Empty cart
             cart.clear();
 
             cout << "Cart cleared successfully!\n";
         }
+        
     }
 }
 if (choice == 15)
