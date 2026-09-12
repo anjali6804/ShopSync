@@ -5,14 +5,34 @@
 std::size_t MemoryTracker::allocations = 0;
 std::size_t MemoryTracker::deallocations = 0;
 
-void MemoryTracker::recordAllocation()
+std::unordered_set<void*> MemoryTracker::activeAllocations;
+
+void MemoryTracker::recordAllocation(void* address)
 {
-    allocations++;
+    if (address == nullptr)
+    {
+        return;
+    }
+
+    auto result = activeAllocations.insert(address);
+
+    if (result.second)
+    {
+        allocations++;
+    }
 }
 
-void MemoryTracker::recordDeallocation()
+void MemoryTracker::recordDeallocation(void* address)
 {
-    deallocations++;
+    if (address == nullptr)
+    {
+        return;
+    }
+
+    if (activeAllocations.erase(address) > 0)
+    {
+        deallocations++;
+    }
 }
 
 void MemoryTracker::report()
@@ -20,15 +40,20 @@ void MemoryTracker::report()
     std::cout << "\n========== MEMORY REPORT ==========\n";
     std::cout << "Allocations   : " << allocations << '\n';
     std::cout << "Deallocations : " << deallocations << '\n';
+    std::cout << "Active blocks : " << activeAllocations.size() << '\n';
 
-    if (allocations == deallocations)
+    if (activeAllocations.empty())
     {
         std::cout << "Memory status : No potential leaks detected.\n";
     }
     else
     {
-        std::cout << "Memory status : Potential memory leak detected.\n";
-        std::cout << "Unreleased allocations : "
-                  << allocations - deallocations << '\n';
+        std::cout << "Memory status : Potential memory leaks detected.\n";
+        std::cout << "Leaked blocks :\n";
+
+        for (void* address : activeAllocations)
+        {
+            std::cout << "  " << address << '\n';
+        }
     }
 }
