@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <thread>
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -62,6 +63,40 @@ bool Server::start(int port)
 
     return true;
 }
+void Server::handleClient(int clientSocket)
+{   std::cout << "Handling client in separate thread...\n";
+    char buffer[1024] = {0};
+    int bytesReceived = recv(
+        clientSocket,
+        buffer,
+        sizeof(buffer) - 1,
+        0
+    );
+   
+    std::cout << "recv() returned: "
+              << bytesReceived << '\n';
+
+    if (bytesReceived > 0)
+    {
+        buffer[bytesReceived] = '\0';
+
+        std::cout << "Client: "
+                  << buffer << '\n';
+
+        const char* response = "Hello Client!";
+
+        send(
+            clientSocket,
+            response,
+            strlen(response),
+            0
+        );
+    }
+
+    close(clientSocket);
+
+    std::cout << "Client disconnected.\n";
+}
 
 void Server::run()
 {
@@ -86,37 +121,12 @@ void Server::run()
 
         std::cout << "Client connected successfully!\n";
 
-        char buffer[1024] = {0};
-
-        int bytesReceived = recv(
-            clientSocket,
-            buffer,
-            sizeof(buffer) - 1,
-            0
+        std::thread clientThread(
+            &Server::handleClient,
+            this,
+            clientSocket
         );
 
-        std::cout << "recv() returned: "
-                  << bytesReceived << '\n';
-
-        if (bytesReceived > 0)
-        {
-            buffer[bytesReceived] = '\0';
-
-            std::cout << "Client: "
-                      << buffer << '\n';
-
-            const char* response = "Hello Client!";
-
-            send(
-                clientSocket,
-                response,
-                strlen(response),
-                0
-            );
-        }
-
-        close(clientSocket);
-
-        std::cout << "Client disconnected.\n";
+        clientThread.detach();
     }
 }

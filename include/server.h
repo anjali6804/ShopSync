@@ -12,6 +12,7 @@ public:
 
     bool start(int port);
     void run();
+    void handleClient(int clientSocket);
 };
 
 #endif
