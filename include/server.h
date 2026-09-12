@@ -17,6 +17,7 @@ public:
     void run();
     void handleClient(int clientSocket);
     void broadcastMessage(const char* message, int senderSocket);
+    void removeClient(int clientSocket);
 };
 
 #endif

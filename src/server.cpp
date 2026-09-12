@@ -83,6 +83,22 @@ void Server::broadcastMessage(const char* message, int senderSocket)
         }
     }
 }
+void Server::removeClient(int clientSocket)
+{
+    std::lock_guard<std::mutex> lock(clientsMutex);
+
+    for (auto it = clients.begin(); it != clients.end(); ++it)
+    {
+        if (*it == clientSocket)
+        {
+            clients.erase(it);
+
+            std::cout << "Client removed from active client list.\n";
+
+            break;
+        }
+    }
+}
 void Server::handleClient(int clientSocket)
 {
     std::cout << "Handling client in separate thread...\n";
@@ -114,10 +130,11 @@ void Server::handleClient(int clientSocket)
         broadcastMessage(buffer, clientSocket);
     }
 
-    close(clientSocket);
+   removeClient(clientSocket);
 
-    std::cout << "Client disconnected.\n";
-}
+close(clientSocket);
+
+std::cout << "Client disconnected.\n";}
 
 void Server::run()
 {

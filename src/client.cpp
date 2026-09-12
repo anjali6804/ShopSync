@@ -84,6 +84,7 @@ void Client::disconnect()
 {
     if (clientSocket != -1)
     {
+        shutdown(clientSocket, SHUT_RDWR);
         close(clientSocket);
         clientSocket = -1;
     }
