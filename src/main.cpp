@@ -1,9 +1,10 @@
 #include "../include/product_manager.h"
-#include <iostream>
 #include "../include/cart.h"
 #include "../include/order.h"
-using namespace std;
 
+#include <iostream>
+
+using namespace std;
 int main()
 {
     ProductManager manager;
