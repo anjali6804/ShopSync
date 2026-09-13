@@ -5,6 +5,34 @@
 #include <iostream>
 
 using namespace std;
+void addProduct(ProductManager& manager)
+{
+    int id;
+    string name;
+    double price;
+    int stock;
+    string category;
+
+    cout << "\nEnter Product ID: ";
+    cin >> id;
+
+    cout << "Enter Product Name: ";
+    cin >> name;
+
+    cout << "Enter Product Price: ";
+    cin >> price;
+
+    cout << "Enter Product Stock: ";
+    cin >> stock;
+
+    cout << "Enter Product Category: ";
+    cin >> category;
+
+    manager.addProduct(Product(id, name, price, stock, category));
+
+    cout << "\nProduct added successfully!\n";
+    manager.saveToFile("data/products.txt");
+}
 int main()
 {
     ProductManager manager;
@@ -46,33 +74,9 @@ while (true)
 
 case 1:
 {
-    int id;
-    string name;
-    double price;
-    int stock;
-    string category;
-
-    cout << "\nEnter Product ID: ";
-    cin >> id;
-
-    cout << "Enter Product Name: ";
-    cin >> name;
-
-    cout << "Enter Product Price: ";
-    cin >> price;
-
-    cout << "Enter Product Stock: ";
-    cin >> stock;
-
-    cout << "Enter Product Category: ";
-    cin >> category;
-
-    manager.addProduct(Product(id, name, price, stock, category));
-
-    cout << "\nProduct added successfully!\n";
-      manager.saveToFile("data/products.txt");
-      break;
-}  
+    addProduct(manager);
+    break;
+}
 case 2:
 {
     int id;
