@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <cctype>
 
 void ProductManager::addProduct(const Product& product)
 {
@@ -26,7 +27,34 @@ Product* ProductManager::findProduct(int id)
 
     return nullptr;
 }
+Product* ProductManager::findProductByName(const std::string& name)
+{
+    for (auto& pair : products)
+    {
+        std::string productName = pair.second.getName();
 
+        if (productName.size() == name.size())
+        {
+            bool match = true;
+
+            for (size_t i = 0; i < name.size(); i++)
+            {
+                if (std::tolower(productName[i]) != std::tolower(name[i]))
+                {
+                    match = false;
+                    break;
+                }
+            }
+
+            if (match)
+            {
+                return &pair.second;
+            }
+        }
+    }
+
+    return nullptr;
+}
 void ProductManager::displayAllProducts() const
 {
     for (const auto& pair : products)

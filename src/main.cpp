@@ -90,12 +90,12 @@ if (choice == 2)
 }
 if (choice == 3)
 {
-    int id;
+    string name;
 
-    cout << "\nEnter Product ID to search: ";
-    cin >> id;
+    cout << "\nEnter Product Name to search: ";
+    cin >> name;
 
-    Product* product = manager.findProduct(id);
+    Product* product = manager.findProductByName(name);
 
     if (product != nullptr)
     {
@@ -176,16 +176,16 @@ if (choice == 8)
 }
 if (choice == 10)
 {
-    int id;
+    string name;
     int quantity;
 
-    cout << "\nEnter Product ID to add to cart: ";
-    cin >> id;
+    cout << "\nEnter Product Name to add to cart: ";
+    cin >> name;
 
     cout << "Enter Quantity: ";
     cin >> quantity;
 
-    Product* product = manager.findProduct(id);
+    Product* product = manager.findProductByName(name);
 
     if (product != nullptr)
     {
@@ -205,18 +205,27 @@ if (choice == 11)
 }
 if (choice == 12)
 {
-    int id;
+    string name;
 
-    cout << "\nEnter Product ID to remove from cart: ";
-    cin >> id;
+    cout << "\nEnter Product Name to remove from cart: ";
+    cin >> name;
 
-    if (cart.removeItem(id))
+    Product* product = manager.findProductByName(name);
+
+    if (product != nullptr)
     {
-        cout << "Product removed from cart successfully!\n";
+        if (cart.removeItem(product->getId()))
+        {
+            cout << "Product removed from cart successfully!\n";
+        }
+        else
+        {
+            cout << "Product is not in the cart!\n";
+        }
     }
     else
     {
-        cout << "Product not found in cart!\n";
+        cout << "Product not found!\n";
     }
 }
 if (choice == 13)

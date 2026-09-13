@@ -14,6 +14,7 @@ public:
     bool removeProduct(int id);
 
     Product* findProduct(int id);
+    Product* findProductByName(const std::string& name);
 
     void displayAllProducts() const;
 
