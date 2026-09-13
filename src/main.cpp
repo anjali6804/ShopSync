@@ -37,13 +37,13 @@ while (true)
     cout << "\nEnter choice: ";
     cin >> choice;
 
-    if (choice == 9)
-    {
+    switch (choice)
+{
+    case 9:{
         cout << "Exiting ShopSync...\n";
-        break;
-    }
+        return 0;}
 
-if (choice == 1)
+case 1:
 {
     int id;
     string name;
@@ -70,8 +70,9 @@ if (choice == 1)
 
     cout << "\nProduct added successfully!\n";
       manager.saveToFile("data/products.txt");
+      break;
 }  
-if (choice == 2)
+case 2:
 {
     int id;
 
@@ -86,9 +87,9 @@ if (choice == 2)
     else
     {
         cout << "Product not found!\n";
-    }
-}
-if (choice == 3)
+    } break;
+} 
+case 3:
 {
     string name;
 
@@ -106,9 +107,9 @@ if (choice == 3)
     else
     {
         cout << "Product not found!\n";
-    }
+    } break;
 }
-if (choice == 4)
+case 4:
 {
     int id;
     double newPrice;
@@ -130,9 +131,9 @@ if (choice == 4)
     else
     {
         cout << "Product not found!\n";
-    }
+    } break;
 }
-if (choice == 5)
+case 5:
 {
     int id;
     int newStock;
@@ -154,27 +155,28 @@ if (choice == 5)
     else
     {
         cout << "Product not found!\n";
-    }
+    } break;
 }
 
-if (choice == 6){
+case 6: {
     cout << "\n========== ALL PRODUCTS ==========\n";
-    manager.displayAllProducts();}
-if (choice == 7)
+    manager.displayAllProducts();
+break;}
+case 7:
 {
     cout << "\nProducts sorted by price:\n";
 
     manager.sortByPrice();
-
+    break;
 }
-if (choice == 8)
+case 8:
 {
     cout << "\nProducts sorted by stock:\n";
 
     manager.sortByStock();
-
+break;
 }
-if (choice == 10)
+case 10:
 {
     string name;
     int quantity;
@@ -195,15 +197,16 @@ if (choice == 10)
     else
     {
         cout << "Product not found!\n";
-    }
+    } break;
 }
-if (choice == 11)
+case 11:
 {
     cout << "\n========== YOUR CART ==========\n";
 
     cart.displayCart();
+    break;
 }
-if (choice == 12)
+case 12:
 {
     string name;
 
@@ -226,16 +229,17 @@ if (choice == 12)
     else
     {
         cout << "Product not found!\n";
-    }
+    } break;
 }
-if (choice == 13)
+case 13:
 {
     double total = cart.calculateTotal();
 
     cout << "\n========== CART TOTAL ==========\n";
     cout << "Total Amount: " << total << '\n';
+    break;
 }
-if (choice == 14)
+case 14:
 {
     cout << "\nCreating order...\n";
 
@@ -262,7 +266,7 @@ if (choice == 14)
 
                 stockAvailable = false;
                 break;
-            }
+            } 
         }
 
         // Step 2: Only continue if ALL products are available
@@ -295,12 +299,18 @@ if (choice == 14)
             cout << "Cart cleared successfully!\n";
         }
         
-    }
+    } break;
 }
-if (choice == 15)
+case 15:
 {
     manager.saveToFile("data/products.txt");
+    break;
 }
+
+default : {
+    cout<< "Invalid choice ! Please try again. \n";
+    break;
+}}
 }
 
     return 0;
