@@ -60,7 +60,17 @@ bool Client::connectToServer(const char* ip, int port)
 
 void Client::sendMessage(const char* message)
 {
-    send(clientSocket, message, strlen(message), 0);
+    int bytesSent = send(
+        clientSocket,
+        message,
+        strlen(message),
+        0
+    );
+
+    if (bytesSent == -1)
+    {
+        std::cerr << "Failed to send message to server.\n";
+    }
 }
 
 void Client::receiveMessage()
