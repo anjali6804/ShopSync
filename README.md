@@ -55,7 +55,7 @@ The project simulates an e-commerce system with product and cart management whil
 
 ## Project Architecture
 
-```text
+
                          ShopSync
                             |
               +-------------+-------------+
